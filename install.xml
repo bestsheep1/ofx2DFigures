@@ -1,0 +1,38 @@
+<install>
+    <name>ofx2DFigures</name>
+    
+    <version>0.1</version>
+    <author>Daniel Gallardo</author>
+    <url>http://github.com/bestsheep1/ofxTableGestures</url>
+    
+    <add>    
+        <!--    =====================================================================    -->
+        <!--    ========================== add per project using this addon =========    -->
+        <!--    =====================================================================    -->
+        <src>
+        
+            <folder name="addons/ofx2DFigures/src">
+                <file>../../../addons/ofx2DFigures/src/Triangulate.h</file>
+                <file>../../../addons/ofx2DFigures/src/Polygon.cpp</file>
+                <file>../../../addons/ofx2DFigures/src/Figure.h</file>
+                <file>../../../addons/ofx2DFigures/src/BoundingBox.cpp</file>
+                <file>../../../addons/ofx2DFigures/src/Figure.cpp</file>
+                <file>../../../addons/ofx2DFigures/src/CollisionHelper.h</file>
+                <file>../../../addons/ofx2DFigures/src/BoundingBox.h</file>
+                <file>../../../addons/ofx2DFigures/src/Triangulate.cpp</file>
+                <file>../../../addons/ofx2DFigures/src/CollisionHelper.cpp</file>
+                <file>../../../addons/ofx2DFigures/src/TestTriangulation.h</file>
+                <file>../../../addons/ofx2DFigures/src/Matrix.h</file>
+                <file>../../../addons/ofx2DFigures/src/Polygon.h</file>
+            </folder>
+
+
+        </src>
+        
+        <include>
+			<path>../../../addons/ofx2DFigures/src</path>
+        </include>
+        
+    </add>
+     
+</install>
