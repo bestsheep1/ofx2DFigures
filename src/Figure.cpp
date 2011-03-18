@@ -30,7 +30,6 @@
 */
 
 #include "Figure.h"
-#include "GlobalConfig.hpp"
 #include "CollisionHelper.h"
 
 using namespace Figures;
