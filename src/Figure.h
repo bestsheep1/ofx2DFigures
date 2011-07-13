@@ -51,6 +51,7 @@ namespace Figures
             bool Collide(ofPoint const & point);
             virtual void GetCentre(float & x, float & y);
             ofPoint GetCentre();
+            Matrix & getMatrix();
         protected:
             BoundingBox bbox;
             bool has_texture;

@@ -32,7 +32,10 @@
 #include "Figure.h"
 #include "CollisionHelper.h"
 
-using namespace Figures;
+namespace Figures
+{
+    
+
 
 Figure::Figure():has_texture(false)
 {
@@ -125,4 +128,11 @@ void Figure::GetCentre(float & x, float & y)
     matrix.Transform(center);
     x = center.x;
     y = center.y;
+}
+
+Matrix & Figure::getMatrix()
+{
+    return matrix;
+}
+
 }
