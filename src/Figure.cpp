@@ -34,7 +34,7 @@
 
 namespace Figures
 {
-    
+
 
 
 Figure::Figure():has_texture(false)
@@ -60,6 +60,7 @@ void Figure::SetTexture(const std::string & path)
         has_texture = false;
         return;
     }
+    texture.rotate90(2);
     has_texture = true;
 }
 
