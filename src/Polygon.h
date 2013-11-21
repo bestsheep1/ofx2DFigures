@@ -56,6 +56,11 @@ namespace Figures
             ofPoint centre;
             /// triangle tecture vertexs.
             vector_points textureVertexs;
+            // VBO for drawing
+            ofVboMesh mesh;
+            ofVboMesh linemesh;
+            // control if texture changes
+            bool last_texture_state;
 
             virtual void RebuildGeometry();
 

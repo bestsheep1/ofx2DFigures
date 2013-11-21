@@ -42,7 +42,9 @@ namespace Figures
 
 Polygon::Polygon()
 {
-
+    last_texture_state = false;
+    mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+    linemesh.setMode(OF_PRIMITIVE_LINE_STRIP);
 }
 
 Polygon::Polygon(vector_points):processed(false),it_is_empty(true)
@@ -53,6 +55,7 @@ Polygon::Polygon(vector_points):processed(false),it_is_empty(true)
 void Polygon::AddVertex(ofPoint vertex)
 {
     raw_vertexs.push_back(vertex);
+    linemesh.addVertex(vertex);
     bbox.AddPoint(vertex.x,vertex.y);
     if(it_is_empty)
     {
@@ -80,6 +83,25 @@ void Polygon::RebuildGeometry()
             textureVertexs.push_back(ofPoint( 1 - ((updatedVertexs[i].x - bbox.GetXmin())/rx), 1 - ((updatedVertexs[i].y - bbox.GetYmin())/ry) ));
         }
     }
+    mesh.clear();
+    int tcount = updatedVertexs.size()/3;
+    for (int i=0; i<tcount; i++)
+    {
+        mesh.addVertex(ofVec3f(updatedVertexs[i*3+0].x,updatedVertexs[i*3+0].y));
+        mesh.addVertex(ofVec3f(updatedVertexs[i*3+1].x,updatedVertexs[i*3+1].y));
+        mesh.addVertex(ofVec3f(updatedVertexs[i*3+2].x,updatedVertexs[i*3+2].y));
+
+        if(has_texture)
+        {
+            mesh.addTexCoord(ofVec2f(textureVertexs[i*3+0].x * texture.getTextureReference().texData.tex_t,
+                                 textureVertexs[i*3+0].y * texture.getTextureReference().texData.tex_u));
+            mesh.addTexCoord(ofVec2f(textureVertexs[i*3+1].x * texture.getTextureReference().texData.tex_t,
+                                 textureVertexs[i*3+1].y * texture.getTextureReference().texData.tex_u));
+            mesh.addTexCoord(ofVec2f(textureVertexs[i*3+2].x * texture.getTextureReference().texData.tex_t,
+                                 textureVertexs[i*3+2].y * texture.getTextureReference().texData.tex_u));
+        }
+    }
+
 }
 
 int Polygon::GetTriangleNumber()
@@ -90,56 +112,28 @@ int Polygon::GetTriangleNumber()
 
 void Polygon::Design()
 {
-    if (!processed) RebuildGeometry();
-    ofPushMatrix();
+    if (!processed || (has_texture && !last_texture_state)) RebuildGeometry();
+    last_texture_state = has_texture;
+
     int tcount = updatedVertexs.size()/3;
     if(has_texture)
     {
+        mesh.enableTextures();
         texture.getTextureReference().bind();
-        for (int i=0; i<tcount; i++)
-        {
-            glBegin(GL_TRIANGLES);
-            glTexCoord2f(textureVertexs[i*3+0].x * texture.getTextureReference().texData.tex_t,
-                         textureVertexs[i*3+0].y * texture.getTextureReference().texData.tex_u);
-            glVertex2f(updatedVertexs[i*3+0].x,updatedVertexs[i*3+0].y);
-
-            glTexCoord2f(textureVertexs[i*3+1].x * texture.getTextureReference().texData.tex_t,
-                         textureVertexs[i*3+1].y * texture.getTextureReference().texData.tex_u);
-            glVertex2f(updatedVertexs[i*3+1].x,updatedVertexs[i*3+1].y);
-
-            glTexCoord2f(textureVertexs[i*3+2].x * texture.getTextureReference().texData.tex_t,
-                         textureVertexs[i*3+2].y * texture.getTextureReference().texData.tex_u);
-            glVertex2f(updatedVertexs[i*3+2].x,updatedVertexs[i*3+2].y);
-
-            glEnd();
-        }
+        mesh.draw();
         texture.getTextureReference().unbind();
     }
     else
     {
-        for (int i=0; i<tcount; i++)
-        {
-            ofBeginShape();
-            ofVertex(updatedVertexs[i*3+0].x,updatedVertexs[i*3+0].y);
-            ofVertex(updatedVertexs[i*3+1].x,updatedVertexs[i*3+1].y);
-            ofVertex(updatedVertexs[i*3+2].x,updatedVertexs[i*3+2].y);
-            ofEndShape();
-        }
+        mesh.disableTextures();
+        mesh.draw();
     }
-    ofPopMatrix();
+
 }
 
 void Polygon::DesignStroke()
 {
-    ofPushMatrix();
-    for(unsigned int i = 0; i < raw_vertexs.size(); i++)
-    {
-        if( i+1 < raw_vertexs.size())
-            ofLine(raw_vertexs[i].x,raw_vertexs[i].y,raw_vertexs[i+1].x,raw_vertexs[i+1].y);
-        else
-            ofLine(raw_vertexs[i].x,raw_vertexs[i].y,raw_vertexs[0].x,raw_vertexs[0].y);
-    }
-    ofPopMatrix();
+    linemesh.draw();
 }
 
 bool Polygon::CheckCollision(ofPoint const & point)
