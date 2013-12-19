@@ -44,7 +44,7 @@ Polygon::Polygon()
 {
     last_texture_state = false;
     mesh.setMode(OF_PRIMITIVE_TRIANGLES);
-    linemesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+    linemesh.setMode(OF_PRIMITIVE_LINE_LOOP);
 }
 
 Polygon::Polygon(vector_points):processed(false),it_is_empty(true)
