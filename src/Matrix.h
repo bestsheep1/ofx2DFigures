@@ -81,7 +81,7 @@ namespace Figures
                 double aedb = data[0]*data[5]-data[1]*data[4];
                 double x = data[5]*(point.x - data[12]) + data[4]*(data[13]-point.y);
                 x = x / aedb;
-                double y = data[5]*(point.y- data[13])+data[1]*(data[12]-point.x);
+                double y = data[1]*(data[12] - point.x) + data[0]*(point.y - data[13]);
                 y = y / aedb;
                 return ofPoint(x,y);
             }
